@@ -3,7 +3,7 @@ pipeline{
   stages{
     stage('repo pulling'){
       steps{
-        git branch: 'main', url: 'https://github.com/Ramana4u/repo2.git'
+        git branch: 'main', url: 'https://github.com/Ramana4u/final_project.git'
         sh "ls"
       }
     }
