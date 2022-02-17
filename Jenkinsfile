@@ -19,7 +19,7 @@ pipeline{
         sh "terraform apply -auto-approve"
       }
     }
-    stage('Cleaning WS'){
+    stage('Cleaning WS1'){
       steps{
         cleanWs()
       }
