@@ -1,6 +1,11 @@
 pipeline{
   agent {label 'slave'}
   stages{
+    stage('Cleaning WS'){
+      steps{
+        cleanWs()
+      }
+    }
     stage('repo pulling'){
       steps{
         git branch: 'main', url: 'https://github.com/Ramana4u/final_project.git'
@@ -12,6 +17,11 @@ pipeline{
         sh "terraform init"
         sh "terraform plan"
         sh "terraform apply -auto-approve"
+      }
+    }
+    stage('Cleaning WS'){
+      steps{
+        cleanWs()
       }
     }
   }
