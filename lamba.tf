@@ -10,11 +10,7 @@ resource "aws_lambda_function" "test_lambda" {
 resource "aws_cloudwatch_event_rule" "lambda_function" {
     name = "lambda_function"
     description = "Fires when lambda creates"
-     event_pattern = <<PATTERN
-{
-  "source": ["aws.lambda"]
-}
-PATTERN
+    schedule_expression = "rate(5 minutes)"
 }
 resource "aws_cloudwatch_event_target" "event_target" {
     rule = aws_cloudwatch_event_rule.lambda_function.name
