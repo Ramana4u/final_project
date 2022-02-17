@@ -1,3 +1,8 @@
+data "archive_file" "lambda_zip" {
+    type        = "zip"
+    source_dir  = "lambda_function_payload.py"
+    output_path = "lambda_function_payload.zip"
+}
 resource "aws_lambda_function" "test_lambda" {
   filename      = "lambda_function_payload.zip"
   function_name = "lambda-project"
@@ -17,14 +22,14 @@ resource "aws_cloudwatch_event_rule" "lambda_function" {
 PATTERN
 }
 resource "aws_cloudwatch_event_target" "event_target" {
-    rule = "${aws_cloudwatch_event_rule.lambda_function.name}"
+    rule = aws_cloudwatch_event_rule.lambda_function.name
     target_id = "test_lambda"
-    arn = "${aws_lambda_function.test_lambda.arn}"
+    arn = aws_lambda_function.test_lambda.arn
 }
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_test_lambda" {
     statement_id = "AllowExecutionFromCloudWatch"
     action = "lambda:InvokeFunction"
-    function_name = "${aws_lambda_function.test_lambda.function_name}"
+    function_name = aws_lambda_function.test_lambda.function_name
     principal = "events.amazonaws.com"
-    source_arn = "${aws_cloudwatch_event_rule.lambda_function.arn}"
+    source_arn = aws_cloudwatch_event_rule.lambda_function.arn
 }
