@@ -7,3 +7,24 @@ resource "aws_lambda_function" "test_lambda" {
  runtime = "python3.9"
  timeout = "840"
 }
+resource "aws_cloudwatch_event_rule" "lambda_function" {
+    name = "lambda_function"
+    description = "Fires when lambda creates"
+     event_pattern = <<PATTERN
+{
+  "source": ["aws.lambda"]
+}
+PATTERN
+}
+resource "aws_cloudwatch_event_target" "event_target" {
+    rule = "${aws_cloudwatch_event_rule.lambda_function.name}"
+    target_id = "test_lambda"
+    arn = "${aws_lambda_function.test_lambda.arn}"
+}
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_test_lambda" {
+    statement_id = "AllowExecutionFromCloudWatch"
+    action = "lambda:InvokeFunction"
+    function_name = "${aws_lambda_function.test_lambda.function_name}"
+    principal = "events.amazonaws.com"
+    source_arn = "${aws_cloudwatch_event_rule.lambda_function.arn}"
+}
