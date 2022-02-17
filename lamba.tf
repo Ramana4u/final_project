@@ -8,7 +8,7 @@ resource "aws_lambda_function" "test_lambda" {
   function_name = "lambda-project"
   role          = "arn:aws:iam::697613968254:role/demo-Role"
   handler       = "lambda_function_payload.lambda_handler"
- source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+ source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
  runtime = "python3.9"
  timeout = "840"
 }
