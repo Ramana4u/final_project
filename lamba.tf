@@ -8,7 +8,7 @@ resource "aws_lambda_function" "test_lambda" {
  timeout = var.timeout
 }
 resource "aws_cloudwatch_event_rule" "lambda_function" {
-    name = vr.name
+    name = var.name
     description = var.description
     schedule_expression = var.schedule_expression
 }
